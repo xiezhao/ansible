@@ -1,0 +1,30 @@
+---
+- name: filename and path
+  hosts: "{{ target_group }}"
+  vars:
+    file_path: "/etc/redhat-release"
+    user_file_path: "~/.bashrc"
+    ip_addr: "/a/c/d.txt"
+  tasks:
+    - name: file name
+      debug:
+        msg: "filename: {{ file_path | basename }}"
+
+    - name: dirctory name
+      debug:
+        msg: "filename: {{ file_path | dirname }}"
+
+    - name: user path name
+      debug:
+        msg: "filename: {{ user_file_path | expanduser }}"  # msg": "filename: /root/.bashrc"
+
+    - name: 获取相对某一个根目录的相对路径
+      debug:
+        msg: "{{ file_path | relpath('/etc') }}"  # "msg": "redhat-release"
+
+    - name: split with dot
+      debug:
+        msg: "splitext: {{ ip_addr | splitext }}" # "msg": "splitext: ('/a/c/d', '.txt')" 可以获取扩展名
+
+
+      

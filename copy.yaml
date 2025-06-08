@@ -1,0 +1,46 @@
+---
+- name: copy
+  hosts: "{{ target_group }}"
+  vars:
+    is_snapshot: true
+  tasks:
+    - name: copy 1
+      copy:
+        src: /tmp/abcdefg.txt
+        dest: /tmp/abcdefg.txt
+
+    - name: copy 2
+      become: true
+      become_user: root
+      copy:
+        src: /tmp/abcdefg.txt
+        dest: /tmp/abcdefg1.txt
+        owner: bob
+        group: bob
+        mode: '0644'
+
+# 如果文件内容不同，则先备份：abcdefg2.txt.128566.2025-06-07@22:26:33
+    - name: copy 3
+      become: true
+      become_user: root
+      copy:
+        src: /tmp/abcdefg.txt
+        dest: /tmp/abcdefg2.txt
+        backup: yes
+
+# 未生效
+    - name: copy from remote
+      become: true
+      become_user: root
+      copy:
+        src: /tmp/node2.txt
+        dest: /tmp/node2.txt
+        remote_src: yes
+
+# 直接写内容到远程文件中
+    - name: write content into file
+      copy:
+        content: |
+          This is the content.
+        dest: /tmp/copy.txt
+

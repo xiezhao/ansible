@@ -1,0 +1,47 @@
+---
+- name: handler
+  hosts: "{{ target_group }}"
+  vars:
+    is_snapshot: true
+  tasks:
+    - name: copy file
+      copy: src=/etc/passwd dest=/tmp/aaa1.txt
+      changed_when: true
+      notify:
+        - handler
+
+    # handler默认是在所有task运行结束才执行，可以使用flush_handlers立即执行
+    # 这样就可以让handler执行多次
+    - name: flush
+      meta: flush_handlers
+
+    - name: copy file 2
+      copy: src=/etc/passwd dest=/tmp/aaa2.txt
+      changed_when: true
+      notify: 
+        - topic1
+
+    # handler默认是在所有task运行结束才执行，可以使用flush_handlers立即执行
+    # 这样就可以让handler执行多次（本例子中，listen会执行2次）
+    - name: flush
+      meta: flush_handlers
+
+    - name: copy file 3
+      copy: src=/etc/passwd dest=/tmp/aaa3.txt
+      changed_when: true
+      notify: 
+        - topic2
+
+# 多个task调用同一个hander，只会执行一次handler
+  handlers:
+    - name: handler
+      shell: echo "111" > /tmp/aaa1.txt
+
+# 通过 listen，一个handler可以监听多个topic
+    - name: listen
+      debug:
+        msg: "listener.."
+      listen:
+        - "topic1"
+        - "topic2"
+

@@ -1,0 +1,41 @@
+---
+- name: register
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: Say Hello
+      shell: echo "Hello" && exit 1
+      register: helloOut
+    - name: echo register
+      debug:
+        msg: "register is {{ helloOut }}"
+    
+
+# {
+# 	'changed': True,
+# 	'stdout': 'Hello',
+# 	'stderr': '',
+# 	'rc': 0,
+# 	'cmd': 'echo \"Hello\"',
+# 	'start': '2025-06-05 05:57:17.515199',
+# 	'end': '2025-06-05 05:57:17.517148',
+# 	'delta': '0:00:00.001949',
+# 	'msg': '',
+# 	'stdout_lines': ['Hello'],
+# 	'stderr_lines': [],
+# 	'failed': False
+# }
+
+
+# {
+# 	"changed": true,
+# 	"cmd": "echo \"Hello\" && exit 1",
+# 	"delta": "0:00:00.001979",
+# 	"end": "2025-06-05 06:01:21.450759",
+# 	"msg": "non-zero return code",
+# 	"rc": 1,
+# 	"start": "2025-06-05 06:01:21.448780",
+# 	"stderr": "",
+# 	"stderr_lines": [],
+# 	"stdout": "Hello",
+# 	"stdout_lines": ["Hello"]
+# }

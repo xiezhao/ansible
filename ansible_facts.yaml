@@ -1,0 +1,11 @@
+---
+- name: set_fact plugin
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: using ansible_facts.default_ipv4.address
+      debug:
+        msg: "ansible_facts.default_ipv4.address: {{ ansible_facts.default_ipv4.address  }}"
+
+    - name: using ansible_facts['os_family']
+      debug:
+        msg: "ansible_facts['os_family']: {{ ansible_facts['os_family']  }}"

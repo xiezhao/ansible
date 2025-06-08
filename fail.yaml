@@ -1,0 +1,22 @@
+---
+- name: register
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: failed 1
+      shell: echo "Hello"
+      register: helloOut
+      failed_when:  # and
+        - helloOut.rc != 0
+        - "'Hello' in helloOut.stdout"
+
+    - name: failed 2
+      shell: echo "Hello"
+      register: helloOut
+      failed_when: > # or
+        (helloOut.rc != 0) or  
+        ("'Hello' in helloOut.stdout")
+
+    - name: failed 3
+      fail:
+        msg: "the command failed"
+      when: helloOut.rc == 0

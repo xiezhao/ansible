@@ -1,0 +1,13 @@
+---
+- name: when
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: distribution_major_version
+      debug:
+        msg: "distribution_major_version is {{ ansible_facts['distribution_major_version'] }}"
+
+    - name: when
+      debug:
+        msg: "distribution is {{ ansible_facts['distribution'] }}"
+      when:
+        - ansible_facts['distribution_major_version'] == "8" and ansible_facts['os_family'] == "RedHat" 

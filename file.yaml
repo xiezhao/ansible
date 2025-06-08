@@ -1,0 +1,65 @@
+---
+- name: file
+  hosts: "{{ target_group }}"
+  vars:
+    is_snapshot: true
+  tasks:
+    - name: create file
+      become: true
+      become_user: root
+      file:
+        path: /tmp/myconfig
+        state: touch
+
+    - name: create dirctory
+      file:
+        path: /tmp/myconfig-d
+        state: directory
+
+    - name: permission
+      file:
+        path: /tmp/myconfig-d-p
+        state: directory
+        mode: "0777"
+
+    - name: delete file if it exists
+      file:
+        path: /tmp/myconfig-d-1
+        state: absent
+
+    - name: chown
+      become: true
+      become_user: root
+      file:
+        path: /tmp/myconfig
+        owner: bob
+        group: bob
+        mode: '0644'
+
+    - name: chown
+      become: true
+      become_user: root
+      file:
+        path: /tmp/myconfig
+        owner: HK-STAGING-ANS
+        group: HK-STAGING-ANS
+        mode: '0644'
+
+# lrwxrwxrwx. 1 HK-STAGING-ANS HK-STAGING-ANS   13 Jun  7 08:53 myconfig-soft -> /tmp/myconfig
+    - name: link
+      file:
+        src: /tmp/myconfig
+        dest: /tmp/myconfig-soft
+        state: link
+
+    - name: recurse create dirctory
+      file:
+        path: /tmp/a
+        state: directory
+
+    - name: chown dirctory
+      file:
+        path: /tmp/a
+        state: directory
+        mode: '0755'
+        recurse: yes

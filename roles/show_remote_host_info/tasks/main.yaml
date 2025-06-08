@@ -1,0 +1,3 @@
+- name: show remote host ip
+  debug:
+    msg: "node_ip is {{ ansible_host }}"

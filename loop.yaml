@@ -1,0 +1,16 @@
+---
+- name: loop
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: retrieve the list of home directories
+      command: ls /home
+      register: home_dirs
+
+    - name: print stdout_lines
+      debug:
+        msg: "stdout_lines: {{ home_dirs.stdout_lines }}"
+
+    - name: print
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ home_dirs.stdout_lines }}"

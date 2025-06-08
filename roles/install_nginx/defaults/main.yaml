@@ -1,0 +1,3 @@
+  become_method: sudo
+  become_user: root
+  become_flags: "-H -S -n"

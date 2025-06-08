@@ -1,0 +1,14 @@
+---
+- name: Install Nginx
+  hosts: "{{ target_hosts }}"
+  gather_facts: true
+  tasks:
+    - name: echo target_hosts
+      debug:
+        msg: "target_hosts is {{ target_hosts }}"
+    - name: Say Hello
+      shell: touch hello.txt && echo "Hello"
+      register: helloOut
+    - name: Print command output
+      debug:
+        msg: "{{ helloOut.stdout }}"

@@ -1,0 +1,8 @@
+---
+- name: display host ip
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: echo ip
+      debug:
+        msg: "node_ip is {{ ansible_host }}"
+    

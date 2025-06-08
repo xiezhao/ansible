@@ -1,0 +1,14 @@
+---
+- name: Install Nginx
+  hosts: "{{ target_hosts }}"
+  become: yes
+  become_user: root
+  tasks:
+    - name: echo target_hosts
+      debug:
+        msg: "target_hosts is {{ target_hosts }}"
+    - name: Say Hello
+      shell: echo "Hello"
+    - name: Ensure Nginx is at the latest version (RedHat/CentOS)
+      shell: dnf -y install nginx
+      when: ansible_os_family == "RedHat"

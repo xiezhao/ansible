@@ -1,0 +1,6 @@
+- name: install nginx
+  become: true
+  become_method: '{{ become_method }}'
+  become_user: '{{ become_user }}'
+  become_flags: '{{ become_flags }}'
+  shell: dnf -y install nginx

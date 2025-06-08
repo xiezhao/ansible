@@ -1,0 +1,33 @@
+---
+- name: quote
+  hosts: "{{ target_group }}"
+  vars:
+    my_string: "This is a string."
+    empty_list: []
+    my_bool: true
+  tasks:
+    - name: add quote to string. (给string加上单引号)
+      debug:
+        msg: "quote string is {{ my_string | quote }}"
+
+    - name: default value. （给没有定义的参数一个默认值）
+      debug:
+        msg: "default value for undefined parameters: {{ undefined_params | default('ABCDEFG') }}"
+
+    - name: default value. （判断空字符串，空列表，空字典是否也为空）
+      debug:
+        msg: "default value for undefined parameters: {{ empty_list | default('ABCDEFG', false) }}"
+
+    - name: omit. （忽略变量的占位符，某个变量没有提供的话）
+      debug:
+        msg: "omit: {{ undefined_params | default(omit) }}"
+
+# fatal: [nginx1]: FAILED! => {"msg": "Mandatory variable 'undefined_params'  not defined."}
+    # - name: mandatory. （变量必须要提供）
+    #   debug:
+    #     msg: "omit: {{ undefined_params | mandatory }}"
+
+    - name: bool
+      debug:
+        msg: "my_bool: {{ my_bool }}"
+      when: my_bool | bool

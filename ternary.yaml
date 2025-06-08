@@ -1,0 +1,9 @@
+---
+- name: ternary
+  hosts: "{{ target_group }}"
+  vars:
+    is_snapshot: true
+  tasks:
+    - name: ternary (三元运算)
+      debug:
+        msg: "{{ is_snapshot | ternary('YES', 'NO')}}"

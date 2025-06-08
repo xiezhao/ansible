@@ -1,0 +1,57 @@
+---
+- name: lookup
+  hosts: "{{ target_group }}"
+  vars:
+    # 读取的是ansible项目中的文件
+    #contents: "{{ lookup('file', './password_testing.txt') }}"
+    # 读取ansible master节点上的文件
+    contents: "{{ lookup('file', '/tmp/password') }}"
+  roles:
+    - show_remote_host_info
+  tasks:
+    # - name: create file
+    #   shell: echo "pass123" > /tmp/password
+
+    - name: read from vars [In Mater Node]
+      debug:
+        msg: "contents: {{ contents }}"
+
+    - name: generate password [In Mater Node]
+      debug:
+        msg: "lookup password: {{ lookup('password', '/tmp/password123', length=20) }}"
+
+    - name: get env [In Mater Node]
+      debug:
+        msg: "env: {{ lookup('env', 'HOME') }}"
+
+    - name: read node exec result [In Node]
+      debug: msg="{{ item }}"
+      loop: 
+        - "{{ lookup('pipe', 'date') }}"
+        - "{{ lookup('pipe', 'cat /tmp/password') }}"
+
+    - name: read template
+      debug: msg="{{ lookup('template', 'template1.j2') }}"
+
+    - name: read ini type file
+      debug:
+        msg: "user= {{ item }}"
+      loop:
+        - "{{ lookup('ini', 'user section=redis file=lookup_demo_properties.ini') }}"
+        - "{{ lookup('ini', 'user section=mysql file=lookup_demo_properties.ini') }}"
+
+    - name: read properties type file
+      debug:
+        msg: "user.name is {{ lookup('ini', 'user.name type=properties file=lookup_demo.properties') }}"
+
+    - name: resolve dns . Need to install >>> pip3 install dnspython
+      debug:
+        msg: "baidu.com ip address: {{ lookup('dig', 'baidu.com') }}"
+
+    - name: reverse dns query
+      debug:
+        msg: "114.114.114.114 DNS: {{ lookup('dig', '114.114.114.114/PTR') }}"
+
+    - name: reverse dns query 1
+      debug:
+        msg: "114.114.114.114 DNS: {{ lookup('dig', 'baidu.com', '@8.8.8.8') }}"

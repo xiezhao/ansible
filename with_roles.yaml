@@ -1,0 +1,6 @@
+---
+- name: register
+  hosts: "{{ target_group }}"
+  roles:
+    - show_remote_host_info
+    - install_nginx

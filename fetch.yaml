@@ -1,0 +1,28 @@
+---
+- name: fetch
+  hosts: "{{ target_group }}"
+  tasks:
+    # 复制到本机的 /tmp/node2.txt/nginx1/tmp/node2.txt
+    # 因为是从多台主机拉取，所以目录就带了主机名，例如：nginx1
+    - name: fetch
+      fetch:
+        src: /tmp/node2.txt
+        dest: /tmp/node22.txt
+        flat: no
+        fail_on_missing: yes # 文件不存在是否会失败
+        validate_checksum: yes
+
+    # 只给路径，复制到本机的 /tmp/node2.txt
+    - name: fetch 1
+      fetch:
+        src: /tmp/node2.txt
+        dest: /tmp/
+        flat: yes 
+
+
+    # 给路径和文件，则复制到本机后重命名
+    - name: fetch 2
+      fetch:
+        src: /tmp/node2.txt
+        dest: /tmp/node3.txt
+        flat: yes

@@ -1,0 +1,17 @@
+---
+- name: ip
+  hosts: "{{ target_group }}"
+  vars:
+    my_var: "192.168.1.1"
+  tasks:
+    - name: ip address
+      debug:
+        msg: "ip address: {{ my_var | ipaddr }}"
+
+    - name: ip v4
+      debug:
+        msg: "ip address: {{ my_var | ipv4 }}"
+
+    - name: ip velidation
+      debug:
+        msg: "ip address: {{ '192.168.0.0/16' | ipaddr('address') }}"

@@ -1,0 +1,16 @@
+---
+- name: set_fact plugin
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: Set a fact
+      set_fact:
+        my_variable: "some value"
+
+    - name: echo my_variable
+      debug:
+        msg: "my_variable is {{ my_variable }}"
+    
+    - name: using debug var
+      debug:
+        var: my_variable
+        #verbosity: 4
