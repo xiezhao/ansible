@@ -1,0 +1,3 @@
+    - name: role_path # 只能用在role中
+      debug:
+        msg: "role_path : {{ role_path }}"  # "role_path : /mnt/hgfs/ansible/roles/role_path"

@@ -1,0 +1,7 @@
+---
+- name: current time
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: copy 1
+      debug:
+        msg: "Current time (UTC): {{ now(utc=true,fmt='%Y-%m-%d %H:%M:%S') }}"  # "Current time (UTC): 2025-06-10 10:35:35"

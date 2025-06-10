@@ -1,0 +1,3 @@
+- name: print vars
+  debug:
+    msg: "vars_in_role var name: {{ vars_in_role_name }}"

@@ -1,0 +1,63 @@
+---
+- name: vars
+  hosts: "{{ target_group }}"
+  vars:
+    my_list1:
+    - apple
+    - banana
+    my_list2:
+    - apple2
+    - banana2
+    my_dict1:
+      name: apple
+      country: china
+    my_dict2:
+      postcode: 713800
+      age: 25
+  tasks:
+    - name: my_list1
+      debug:
+        msg: "my_list1: {{ my_list1 }}"  # "msg": "my_list1: ['apple', 'banana']"
+    - name: my_list1 index 1
+      debug:
+        msg: "my_list1: {{ my_list1[1] }}"  # "my_list1: banana"
+    - name: loop list
+      debug:
+        msg: "my list: {{ item }}"
+      loop: "{{ my_list1 }}"
+    - name: merge list  
+      debug:
+        msg: "my list: {{ item }}"
+      loop: "{{ my_list1 + my_list2 }}"
+      
+
+    - name: dict name
+      debug:
+        msg: "my dict1 name: {{ my_dict1['name'] }}"  # "my dict1 name: apple"
+    - name: merge dict
+      set_fact:
+        merged_dict: "{{ my_dict1 | ansible.builtin.combine(my_dict2) }}"
+    - name: merged_dict
+      debug:
+        msg: "merged_dict: {{ merged_dict }}"  # "merged_dict: {'name': 'apple', 'country': 'china', 'postcode': 713800, 'age': 25}"
+
+
+- name: external_vars
+  hosts: "{{ target_group }}"
+  vars_files:
+    - vars/java_backend.yaml
+  tasks:
+    - name: print external_vars
+      debug:
+        msg: "package info: {{ package.artifact }} , {{ package.version }}" # "package info: ansible-demo , 0.0.1"
+      # 传入参数覆盖默认值
+      # ansible-playbook vars.yaml -i inventories/staging/hosts.yaml -e target_group=market -e ansible_password=abcd1234 -e package_version=0.0.2
+      # "msg": "package info: demo , 0.0.2"
+
+- name: vars in role，直接在playbook中给roles中的role的变量赋值
+  hosts: "{{ target_group }}"
+  roles:
+    - role: vars_in_role # role中打印 "vars_in_role var name: you-name-it"
+      vars: 
+        vars_in_role_name: "you-name-it"
+      

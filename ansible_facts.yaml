@@ -9,3 +9,5 @@
     - name: using ansible_facts['os_family']
       debug:
         msg: "ansible_facts['os_family']: {{ ansible_facts['os_family']  }}"
+
+        

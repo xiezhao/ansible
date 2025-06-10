@@ -1,0 +1,3 @@
+package:
+  version: "{{ package_version | default('0.0.1') }}"
+  artifact: "{{ package_artifact | default('demo') }}"

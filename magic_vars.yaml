@@ -1,0 +1,71 @@
+---
+- name: magic variables
+  hosts: "{{ target_group }}"
+  tasks:
+    - name: inventory_hostname 1 executing hostname. 包含清单中配置的当前受管主机的主机名
+      debug:
+        var: inventory_hostname  # "inventory_hostname": "nginx1"
+    
+    - name: inventory_hostname 2 executing hostname. 包含清单中配置的当前受管主机的主机名
+      debug:
+        msg: "inventory_hostname: {{ inventory_hostname }}" # "inventory_hostname": "nginx2"
+
+    - name: group_names all group names.列出当前受管主机所属的所有组
+      debug:
+        msg: "group_names: {{ group_names }}" # "group_names: ['market', 'web']"
+ 
+    - name: groups.列出清单中的所有组和主机
+      debug:
+        msg: "groups: {{ groups }}" # "groups: {'all': ['nginx1', 'nginx2'], 'ungrouped': [], 'web': ['nginx1', 'nginx2'], 'market': ['nginx1', 'nginx2'], 'hotfix': ['nginx1']}"
+
+    - name: specific group name. groups.market market is the group name.
+      debug:
+        msg: "groups.market: {{ groups.market }}" # "groups.market: ['nginx1', 'nginx2']"
+
+    - name: host variable host_variable_in_host_vars in inventories/staging/host_vars. 包含受管主机的变量，可用于获取另一台受管主机的变量
+      debug:
+        msg: "hostvars.nginx1.host_variable_in_host_varss: {{ hostvars.nginx1.host_variable_in_host_vars }}" # "hostvars.nginx1.host_variable_in_host_varss: abcdefg"
+
+    - name: hostvars
+      debug:
+        msg: "hostvars['nginx1']['ansible_facts']['os_family'] : {{ hostvars['nginx1']['ansible_facts']['os_family'] }}"
+
+    - name: ansible_play_hosts
+      debug:
+        msg: "ansible_play_hosts : {{ ansible_play_hosts }}" # "ansible_play_hosts : ['nginx1', 'nginx2']"
+
+    - name: ansible_play_batch
+      debug:
+        msg: "ansible_play_batch : {{ ansible_play_batch }}"  # "ansible_play_batch : ['nginx1', 'nginx2']"
+
+    - name: ansible_playbook_python 
+      debug:
+        msg: "ansible_playbook_python : {{ ansible_playbook_python }}"  # ansible_playbook_python : /usr/bin/python3"
+
+    - name: inventory_dir
+      debug:
+        msg: "inventory_dir : {{ inventory_dir }}"   # "inventory_dir : /mnt/hgfs/ansible/inventories/staging"
+
+    - name: inventory_file
+      debug:
+        msg: "inventory_file : {{ inventory_file }}"  # "inventory_file : /mnt/hgfs/ansible/inventories/staging/hosts.yaml"
+
+    - name: playbook_dir
+      debug:
+        msg: "playbook_dir : {{ playbook_dir }}"  # "playbook_dir : /mnt/hgfs/ansible"
+
+    - name: ansible_version
+      debug:
+        msg: "ansible_version: {{ ansible_version }}"  # "ansible_version: {'string': '2.18.6', 'full': '2.18.6', 'major': 2, 'minor': 18, 'revision': 6}"
+
+    - name: ansible_version.string
+      debug:
+        msg: "ansible_version: {{ ansible_version.string }} | {{ ansible_version['string'] }}"  # "ansible_version: 2.18.6 | 2.18.6"
+  
+    - name: ansible_processor
+      debug:
+        msg: "ansible_processor: {{ ansible_processor  }}"
+        # "ansible_processor: ['0', 'GenuineIntel', '12th Gen Intel(R) Core(TM) i5-12400F', '1', 'GenuineIntel', '12th Gen Intel(R) Core(TM) i5-12400F', '2', 'GenuineIntel', '12th Gen Intel(R) Core(TM) i5-12400F', '3', 'GenuineIntel', '12th Gen Intel(R) Core(TM) i5-12400F']"
+
+  roles:
+    - role_path

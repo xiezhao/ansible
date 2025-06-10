@@ -1,0 +1,1 @@
+vars_in_role_name: "{{ vars_in_role_name | default('vars_in_role_name_default_value ') }}"

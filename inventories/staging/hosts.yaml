@@ -7,6 +7,9 @@ all:
             nginx1:
               ansible_host: 192.168.3.191
               ansible_user: HK-STAGING-ANS
+            nginx2:
+              ansible_host: 192.168.3.192
+              ansible_user: HK-STAGING-ANS
         hotfix:
           hosts:
             nginx1:
